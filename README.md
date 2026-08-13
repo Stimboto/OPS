@@ -1,4 +1,6 @@
 <div align="center">
+  <img width="1983" height="793" alt="ChatGPT Image Aug 14, 2026, 12_31_17 AM" src="https://github.com/user-attachments/assets/921234df-ce19-43f3-ad72-8befac6a1904" />
+
   <h1>🚨 OPS - Incident & Operations Management</h1>
   <p><strong>A highly-scalable, real-time enterprise incident management and operations platform.</strong></p>
 </div>
@@ -216,19 +218,6 @@ Upon first run, EF Core seeding creates the following accounts (Password for all
 - **Manager**: `manager@gms.com`
 - **Responder**: `responder@gms.com`
 - **Reporter**: `reporter@gms.com`
-
----
-
-## 📸 Screenshots
-
-![Analytics Dashboard](assets/analytics.png)
-*Real-time analytics aggregating incident volume, SLA breaches, and team workload.*
-
-![Incident Detail](assets/incident_detail.png)
-*Real-time incident collaboration with comments, attachments, and historical audit trail.*
-
-![Main Dashboard](assets/dashboard.png)
-*Targeted incident view showing items requiring immediate attention and SLA compliance status.*
 
 ---
 
