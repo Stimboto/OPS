@@ -1,6 +1,20 @@
 <div align="center">
   <h1>🚨 OPS - Incident & Operations Management</h1>
-  <p><strong>A highly-scalable, real-time enterprise incident management and operations platform.</strong></p>
+  
+  <h3>Track • Collaborate • Resolve</h3>
+  <p><em>A highly-scalable, real-time enterprise incident management and operations platform.</em></p>
+  
+  <p>
+    <img src="https://img.shields.io/badge/FRONTEND-ANGULAR%2018-E50914?style=for-the-badge&logo=angular&logoColor=white" alt="Angular 18" />
+    <img src="https://img.shields.io/badge/.NET%20BACKEND-.NET%2010.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 10" />
+    <img src="https://img.shields.io/badge/DATABASE-SQL%20SERVER-CC292B?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" alt="SQL Server" />
+    <img src="https://img.shields.io/badge/REAL--TIME-SIGNALR-0078D4?style=for-the-badge&logo=signal&logoColor=white" alt="SignalR" />
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/STATUS-COMPLETED-4CAF50?style=for-the-badge" alt="Status" />
+  </p>
+  
+  <p><em>Real-Time • Secure • Enterprise-Grade</em></p>
 </div>
 
 <hr>
@@ -216,19 +230,6 @@ Upon first run, EF Core seeding creates the following accounts (Password for all
 - **Manager**: `manager@gms.com`
 - **Responder**: `responder@gms.com`
 - **Reporter**: `reporter@gms.com`
-
----
-
-## 📸 Screenshots
-
-![Analytics Dashboard](assets/analytics.png)
-*Real-time analytics aggregating incident volume, SLA breaches, and team workload.*
-
-![Incident Detail](assets/incident_detail.png)
-*Real-time incident collaboration with comments, attachments, and historical audit trail.*
-
-![Main Dashboard](assets/dashboard.png)
-*Targeted incident view showing items requiring immediate attention and SLA compliance status.*
 
 ---
 
