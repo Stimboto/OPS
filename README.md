@@ -1,5 +1,9 @@
 <div align="center">
+<<<<<<< HEAD
  <img width="1983" height="793" alt="ChatGPT Image Aug 14, 2026, 12_31_17 AM" src="https://github.com/user-attachments/assets/921234df-ce19-43f3-ad72-8befac6a1904" />
+=======
+  <img width="1983" height="793" alt="ChatGPT Image Aug 14, 2026, 12_31_17 AM" src="https://github.com/user-attachments/assets/921234df-ce19-43f3-ad72-8befac6a1904" />
+>>>>>>> b50f1c15d784af9b9bd90f4e96995da6e96acf12
 
   <h1>🚨 OPS - Incident & Operations Management</h1>
   
