@@ -1,4 +1,6 @@
 <div align="center">
+ <img width="1983" height="793" alt="ChatGPT Image Aug 14, 2026, 12_31_17 AM" src="https://github.com/user-attachments/assets/921234df-ce19-43f3-ad72-8befac6a1904" />
+
   <h1>🚨 OPS - Incident & Operations Management</h1>
   
   <h3>Track • Collaborate • Resolve</h3>
