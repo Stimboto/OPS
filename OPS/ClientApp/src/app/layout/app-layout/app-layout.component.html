@@ -1,0 +1,54 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>
+      <div style="padding: 1rem 1rem 2rem;">
+        <h2 class="logo">OPS</h2>
+      </div>
+      
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      
+      <a mat-list-item routerLink="/incidents" routerLinkActive="active">
+        <mat-icon matListItemIcon>warning</mat-icon>
+        <span matListItemTitle>Incidents</span>
+      </a>
+      
+      <div style="flex: 1"></div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <span>Operations Management</span>
+      <span class="spacer"></span>
+
+      <!-- Connection Status -->
+      <div class="connection-status" [ngClass]="connectionStatus.toLowerCase()" title="SignalR Connection Status">
+        <span class="status-dot"></span>
+        <span class="status-text">{{ connectionStatus }}</span>
+      </div>
+
+      <!-- Notifications -->
+      <button mat-icon-button class="notification-btn" aria-label="Notifications">
+        <mat-icon [matBadge]="unreadNotifications" [matBadgeHidden]="unreadNotifications === 0" matBadgeColor="warn">
+          notifications
+        </mat-icon>
+      </button>
+
+      <div class="user-info">
+        <mat-icon>account_circle</mat-icon>
+        <span>{{ userName }}</span>
+        <span class="role-badge">{{ userRole }}</span>
+      </div>
+      <button mat-icon-button (click)="logout()" title="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

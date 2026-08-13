@@ -1,0 +1,76 @@
+<div class="create-incident-container">
+  <mat-card class="incident-card" *ngIf="!createdTrackingId">
+    <mat-card-header>
+      <mat-card-title>Report Incident</mat-card-title>
+      <mat-card-subtitle>Create a new operational incident</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="errorMessage" class="error-banner">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()" class="form-container">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" placeholder="Brief summary of the issue">
+          <mat-error *ngIf="incidentForm.get('title')?.hasError('required')">Title is required</mat-error>
+          <mat-error *ngIf="incidentForm.get('title')?.hasError('maxlength')">Title is too long</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="5" placeholder="Detailed technical description"></textarea>
+          <mat-error *ngIf="incidentForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Severity</mat-label>
+            <mat-select formControlName="severity">
+              <mat-option *ngFor="let s of severities" [value]="s.value">{{ s.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Priority</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option *ngFor="let p of priorities" [value]="p.value">{{ p.label }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Target Team (Optional)</mat-label>
+          <mat-select formControlName="teamId">
+            <mat-option [value]="null">-- Unassigned --</mat-option>
+            <mat-option *ngFor="let t of teams" [value]="t.id">{{ t.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="incidentForm.invalid || isSubmitting">
+            <mat-spinner diameter="20" *ngIf="isSubmitting" class="button-spinner"></mat-spinner>
+            <span *ngIf="!isSubmitting">Submit Incident</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="success-card" *ngIf="createdTrackingId">
+    <mat-card-content class="success-content">
+      <mat-icon class="success-icon">check_circle</mat-icon>
+      <h2>Incident Created</h2>
+      <div class="tracking-id">{{ createdTrackingId }}</div>
+      <p>The incident has been successfully reported and queued for assignment.</p>
+      
+      <div class="success-actions">
+        <button mat-raised-button color="primary" (click)="viewIncident()">View Incident</button>
+        <button mat-button (click)="resetForm()">Report Another</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

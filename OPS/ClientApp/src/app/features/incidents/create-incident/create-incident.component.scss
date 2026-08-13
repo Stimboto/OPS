@@ -1,0 +1,99 @@
+.create-incident-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.incident-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  
+  button {
+    padding: 0 2rem;
+    height: 48px;
+  }
+}
+
+.button-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.error-banner {
+  background-color: #fdeaea;
+  color: #c62828;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.success-card {
+  text-align: center;
+  padding: 3rem 1rem;
+  
+  .success-icon {
+    font-size: 64px;
+    height: 64px;
+    width: 64px;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .tracking-id {
+    font-size: 32px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #1976d2;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: #f5f9ff;
+    border: 1px dashed #90caf9;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  
+  p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .success-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}

@@ -1,0 +1,213 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Executive Operations Command Center</h1>
+    <p>Global analytics and operations intelligence across all teams.</p>
+  </div>
+
+  <app-analytics-filter (filterChanged)="onFilterChanged($event)"></app-analytics-filter>
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Crunching numbers...</p>
+  </div>
+
+  <ng-container *ngIf="overview && !isLoading">
+    
+    <div *ngIf="overview.totalIncidents === 0" class="empty-state">
+      <mat-icon>insert_chart_outlined</mat-icon>
+      <h2>No Data Available</h2>
+      <p>There are no incidents recorded for the selected time period.</p>
+    </div>
+
+    <ng-container *ngIf="overview.totalIncidents > 0">
+      
+      <!-- Top KPIs -->
+      <div class="kpi-grid">
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Total Incidents</div>
+            <div class="kpi-value">{{ overview.totalIncidents }}</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Active Incidents</div>
+            <div class="kpi-value warning-text">{{ overview.activeIncidents }}</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">SLA Compliance</div>
+            <div class="kpi-value success-text">{{ slaStats?.resolutionSlaCompliancePercentage | number:'1.0-1' }}%</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">SLA Breaches</div>
+            <div class="kpi-value danger-text">{{ slaStats?.totalSlaBreaches }}</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Overall MTTA</div>
+            <div class="kpi-value">{{ mttaMttr?.overallMttaMinutes }} m</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Overall MTTR</div>
+            <div class="kpi-value">{{ mttaMttr?.overallMttrMinutes }} m</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Escalations</div>
+            <div class="kpi-value">{{ escalationStats?.totalEscalated }}</div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="kpi-card">
+          <mat-card-content>
+            <div class="kpi-label">Active Teams</div>
+            <div class="kpi-value">{{ overview.activeTeams }}</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-grid">
+        <mat-card class="chart-card large-chart">
+          <mat-card-header>
+            <mat-card-title>Incident Volume Trend</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas baseChart [data]="volumeChartData" [options]="volumeChartOptions" type="line"></canvas>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Severity Distribution</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas baseChart [data]="severityChartData" [options]="severityChartOptions" type="doughnut"></canvas>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>Status Distribution</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas baseChart [data]="statusChartData" [options]="statusChartOptions" type="bar"></canvas>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Tables -->
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Team Performance</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="teamPerformance" class="full-width-table">
+            <ng-container matColumnDef="teamName">
+              <th mat-header-cell *matHeaderCellDef> Team </th>
+              <td mat-cell *matCellDef="let element"> {{element.teamName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalIncidents">
+              <th mat-header-cell *matHeaderCellDef> Total </th>
+              <td mat-cell *matCellDef="let element"> {{element.totalIncidents}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef> Active </th>
+              <td mat-cell *matCellDef="let element"> {{element.open + element.investigating}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="resolved">
+              <th mat-header-cell *matHeaderCellDef> Resolved </th>
+              <td mat-cell *matCellDef="let element"> {{element.resolved + element.closed}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="slaAtRisk">
+              <th mat-header-cell *matHeaderCellDef> SLA At Risk </th>
+              <td mat-cell *matCellDef="let element" [class.warning-text]="element.slaAtRisk > 0"> {{element.slaAtRisk}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="slaBreached">
+              <th mat-header-cell *matHeaderCellDef> SLA Breached </th>
+              <td mat-cell *matCellDef="let element" [class.danger-text]="element.slaBreached > 0"> {{element.slaBreached}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mtta">
+              <th mat-header-cell *matHeaderCellDef> MTTA </th>
+              <td mat-cell *matCellDef="let element"> {{element.averageResponseTimeMinutes | number:'1.0-1'}}m </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mttr">
+              <th mat-header-cell *matHeaderCellDef> MTTR </th>
+              <td mat-cell *matCellDef="let element"> {{element.averageResolutionTimeMinutes | number:'1.0-1'}}m </td>
+            </ng-container>
+
+            <ng-container matColumnDef="resolutionRate">
+              <th mat-header-cell *matHeaderCellDef> Resolution Rate </th>
+              <td mat-cell *matCellDef="let element"> {{element.resolutionRate}}% </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="teamColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: teamColumns;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Responder Performance</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="responderPerformance" class="full-width-table">
+            <ng-container matColumnDef="responderName">
+              <th mat-header-cell *matHeaderCellDef> Responder </th>
+              <td mat-cell *matCellDef="let element"> {{element.responderName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assigned">
+              <th mat-header-cell *matHeaderCellDef> Assigned </th>
+              <td mat-cell *matCellDef="let element"> {{element.assignedIncidents}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef> Active </th>
+              <td mat-cell *matCellDef="let element"> {{element.activeIncidents}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="resolved">
+              <th mat-header-cell *matHeaderCellDef> Resolved </th>
+              <td mat-cell *matCellDef="let element"> {{element.resolvedIncidents}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="slaBreached">
+              <th mat-header-cell *matHeaderCellDef> SLA Breached </th>
+              <td mat-cell *matCellDef="let element" [class.danger-text]="element.slaBreaches > 0"> {{element.slaBreaches}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mtta">
+              <th mat-header-cell *matHeaderCellDef> MTTA </th>
+              <td mat-cell *matCellDef="let element"> {{element.averageResponseTimeMinutes | number:'1.0-1'}}m </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mttr">
+              <th mat-header-cell *matHeaderCellDef> MTTR </th>
+              <td mat-cell *matCellDef="let element"> {{element.averageResolutionTimeMinutes | number:'1.0-1'}}m </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="responderColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: responderColumns;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,0 +1,26 @@
+<div class="analytics-filter-container">
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="filter-form">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>From Date</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="from">
+      <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>To Date</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="to">
+      <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="filter-actions">
+      <button mat-raised-button color="primary" type="submit">
+        <mat-icon>filter_list</mat-icon> Apply
+      </button>
+      <button mat-button type="button" (click)="resetFilter()">
+        Clear
+      </button>
+    </div>
+  </form>
+</div>

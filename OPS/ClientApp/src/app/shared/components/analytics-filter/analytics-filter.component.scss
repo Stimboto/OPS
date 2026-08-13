@@ -1,0 +1,25 @@
+.analytics-filter-container {
+  background: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.filter-field {
+  width: 200px;
+  margin-bottom: -1.25em; /* Remove bottom padding of material field */
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="OPS.API/OPS.API.csproj" />
+  <Project Path="OPS.Application/OPS.Application.csproj" />
+  <Project Path="OPS.Domain/OPS.Domain.csproj" />
+  <Project Path="OPS.Infrastructure/OPS.Infrastructure.csproj" />
+</Solution>

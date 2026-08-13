@@ -1,0 +1,89 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Incidents</h1>
+    <button mat-raised-button color="primary" (click)="reportIncident()">
+      <mat-icon>add</mat-icon> Report Incident
+    </button>
+  </div>
+
+  <div class="controls-row">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search incidents...</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Database slow" #input>
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="table-container mat-elevation-z2">
+    <div class="loading-shade" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="trackingId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row" class="tracking-id-cell"> {{row.trackingId}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+        <td mat-cell *matCellDef="let row" class="title-cell"> {{row.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-chip" [ngClass]="getStatusClass(row.status)">
+            {{ getStatusName(row.status) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="severity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Severity </th>
+        <td mat-cell *matCellDef="let row"> {{ getSeverityName(row.severity) }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
+        <td mat-cell *matCellDef="let row"> {{ getPriorityName(row.priority) }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="teamName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
+        <td mat-cell *matCellDef="let row"> {{row.teamName || 'Unassigned'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="assignedResponderName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Responder </th>
+        <td mat-cell *matCellDef="let row"> {{row.assignedResponderName || 'Unassigned'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+        <td mat-cell *matCellDef="let row"> {{row.createdAt | date:'short'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="viewIncident(row.id)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="incident-row" (click)="viewIncident(row.id)"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data-cell" colspan="9">
+          <div *ngIf="!isLoading">No incidents found matching the filter.</div>
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of incidents"></mat-paginator>
+  </div>
+</div>

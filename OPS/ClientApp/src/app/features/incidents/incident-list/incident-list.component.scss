@@ -1,0 +1,97 @@
+.list-container {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+  }
+}
+
+.controls-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.search-field {
+  width: 100%;
+  max-width: 400px;
+}
+
+.table-container {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table {
+  width: 100%;
+}
+
+.incident-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f5f9ff;
+  }
+}
+
+.tracking-id-cell {
+  font-family: monospace;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.title-cell {
+  font-weight: 500;
+  color: #333;
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: 3rem !important;
+  color: #666;
+}
+
+.status-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.status-open { background-color: #e3f2fd; color: #1565c0; }
+.status-assigned { background-color: #fff3e0; color: #e65100; }
+.status-investigating { background-color: #f3e5f5; color: #6a1b9a; }
+.status-mitigating { background-color: #e8f5e9; color: #2e7d32; }
+.status-resolved { background-color: #e0f2f1; color: #00695c; }
+.status-closed { background-color: #eeeeee; color: #424242; }
+.status-reopened { background-color: #ffebee; color: #c62828; }
+.status-escalated { background-color: #ffebee; color: #d32f2f; border: 1px solid #d32f2f; }

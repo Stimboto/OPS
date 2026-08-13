@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  ops-sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - ops-sqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${DB_PASSWORD}", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ops-api:
+    build:
+      context: ./OPS
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=ops-sqlserver,1433;Database=OPSDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True
+      - JwtSettings__Secret=${JWT_SECRET}
+      - JwtSettings__Issuer=${JWT_ISSUER}
+      - JwtSettings__Audience=${JWT_AUDIENCE}
+    ports:
+      - "5000:8080"
+    volumes:
+      - ops-uploads:/app/uploads
+    depends_on:
+      ops-sqlserver:
+        condition: service_healthy
+
+  ops-frontend:
+    build:
+      context: ./OPS/ClientApp
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - ops-api
+
+volumes:
+  ops-sqldata:
+  ops-uploads:

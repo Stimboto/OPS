@@ -1,0 +1,129 @@
+<div class="detail-container">
+  <button mat-button class="back-btn" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> Back to Incidents
+  </button>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage">
+    <mat-icon>error</mat-icon> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="incident && !isLoading" class="content-layout">
+    
+    <!-- Main Content -->
+    <div class="main-column">
+      <mat-card class="header-card">
+        <mat-card-header>
+          <mat-card-title class="incident-title">
+            <span class="tracking-id">{{ incident.trackingId }}</span>
+            <h1>{{ incident.title }}</h1>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="badges">
+            <span class="status-chip" [ngClass]="getStatusClass(incident.status)">
+              {{ getStatusName(incident.status) }}
+            </span>
+            <span class="detail-badge severity-badge">Severity: {{ getSeverityName(incident.severity) }}</span>
+            <span class="detail-badge priority-badge">Priority: {{ getPriorityName(incident.priority) }}</span>
+          </div>
+
+          <!-- Premium SLA Banner -->
+          <div class="sla-banner">
+            <div class="sla-item" [ngClass]="{'breached': isResponseBreached, 'met': incident.responseAt, 'active': !incident.responseAt && !isResponseBreached}">
+              <div class="sla-label">Response SLA</div>
+              <div class="sla-countdown">{{ responseCountdown }}</div>
+            </div>
+            <div class="sla-item" [ngClass]="{'breached': isResolutionBreached, 'met': incident.resolvedAt, 'active': !incident.resolvedAt && !isResolutionBreached}">
+              <div class="sla-label">Resolution SLA</div>
+              <div class="sla-countdown">{{ resolutionCountdown }}</div>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="content-tabs-card">
+        <mat-tab-group>
+          <mat-tab label="Overview">
+            <div class="tab-content">
+              <div class="description-section">
+                <h3>Description</h3>
+                <p class="description-text">{{ incident.description }}</p>
+              </div>
+            </div>
+          </mat-tab>
+          
+          <mat-tab label="Activity & Collaboration">
+            <div class="tab-content">
+              <app-comment-composer [incidentId]="incident.id" (commentPosted)="activityFeed.loadActivity()"></app-comment-composer>
+              <app-attachment-uploader [incidentId]="incident.id" (fileUploaded)="activityFeed.loadActivity()"></app-attachment-uploader>
+              <app-activity-feed #activityFeed [incidentId]="incident.id"></app-activity-feed>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+    </div>
+
+    <!-- Sidebar Content -->
+    <div class="sidebar-column">
+      
+      <!-- Actions Card -->
+      <mat-card class="actions-card" *ngIf="canAssign() || canUpdateStatus()">
+        <mat-card-header>
+          <mat-card-title>Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" *ngIf="canAssign()" class="full-width">
+              <mat-icon>person_add</mat-icon> Assign Responder
+            </button>
+            <button mat-stroked-button color="primary" *ngIf="canUpdateStatus()" class="full-width">
+              <mat-icon>update</mat-icon> Update Status
+            </button>
+            <button mat-stroked-button color="accent" *ngIf="canTimeTravel()" class="full-width" (click)="triggerTimeTravel()">
+              <mat-icon>fast_forward</mat-icon> Fast Forward (+60m)
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Details Card -->
+      <mat-card class="details-card">
+        <mat-card-header>
+          <mat-card-title>Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="detail-row">
+            <span class="label">Reporter</span>
+            <span class="value">{{ incident.reporterName }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="detail-row">
+            <span class="label">Assigned To</span>
+            <span class="value">{{ incident.assignedResponderName || 'Unassigned' }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="detail-row">
+            <span class="label">Team</span>
+            <span class="value">{{ incident.teamName || 'Unassigned' }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="detail-row">
+            <span class="label">Created At</span>
+            <span class="value">{{ incident.createdAt | date:'short' }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="detail-row">
+            <span class="label">Updated At</span>
+            <span class="value">{{ incident.updatedAt ? (incident.updatedAt | date:'short') : 'Never' }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+  </div>
+</div>

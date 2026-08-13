@@ -1,0 +1,81 @@
+<div class="team-detail-container" *ngIf="team">
+  <div class="header-actions">
+    <h2>{{team.name}}</h2>
+    <div class="actions">
+      <button mat-button (click)="goBack()">Back to Teams</button>
+    </div>
+  </div>
+
+  <div class="summary-cards">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Overview</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Description:</strong> {{team.description}}</p>
+        <p><strong>Created:</strong> {{team.createdAt | date}}</p>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Incidents</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Active:</strong> <span [class.text-warn]="team.activeIncidentCount > 0">{{team.activeIncidentCount}}</span></p>
+        <p><strong>SLA Breached:</strong> <span [class.text-warn]="team.slaBreachedIncidentCount > 0">{{team.slaBreachedIncidentCount}}</span></p>
+        <p><strong>Resolved:</strong> {{team.resolvedIncidentCount}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="members-card">
+    <mat-card-header>
+      <mat-card-title>Team Members ({{team.memberCount}})</mat-card-title>
+      <div class="add-member">
+        <mat-form-field appearance="outline">
+          <mat-label>User ID</mat-label>
+          <input matInput type="number" [(ngModel)]="newMemberId" placeholder="Enter User ID">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addMember()" [disabled]="!newMemberId">Add Member</button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="team.members" class="mat-elevation-z2">
+        
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let user"> {{user.fullName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="roleName">
+          <th mat-header-cell *matHeaderCellDef> Role </th>
+          <td mat-cell *matCellDef="let user"> 
+            <mat-chip>{{user.roleName}}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Remove </th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button color="warn" (click)="removeMember(user.userId)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="memberColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: memberColumns;"></tr>
+        
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No members found.</td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
